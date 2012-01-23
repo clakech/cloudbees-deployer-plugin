@@ -1,4 +1,29 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  
+  <f:entry title="${%Cloudbees deployments}">
+      <f:repeatable name="cloudbeesaccount.deploys" items="${instance.deploys}" var="deploy">
+        <table width="100%">
+        	<f:entry title="${%Cloudbees account name}" field="accountName">
+		      <f:textbox value="${deploy.accountName}"/>
+		    </f:entry>
+		    <f:entry title="${%Application Id}" help="/plugin/cloudbees-deployer-plugin/help-applicationId.html" field="applicationId">
+		      <f:textbox value="${deploy.applicationId}"
+		          checkUrl="'${rootURL}/publisher/CloudbeesPublisher/applicationIdCheck?applicationId='+escape(this.value)+'&amp;cloudbeesAccountName='+escape(Form.findMatchingInput(this,'accountName').value)"
+		          />
+		    </f:entry>
+		    <f:entry title="${%Filename Pattern}" help="/plugin/cloudbees-deployer-plugin/help-file-pattern.html" field="filePattern">
+		        <f:textbox value="${deploy.filePattern}"/>
+		    </f:entry>
+		  <f:entry title="">
+		    <div align="right">
+		      <f:repeatableDeleteButton />
+		    </div>
+		  </f:entry>
+        </table>
+      </f:repeatable>
+    </f:entry>
+    
+    
   <j:if test="${descriptor.accounts.size() &gt; 0}">
     <!-- show the selection only when there's something to select -->
     <f:entry title="${%Cloudbees Site}">
@@ -20,7 +45,6 @@
     <f:entry title="${%Filename Pattern}" help="/plugin/cloudbees-deployer-plugin/help-file-pattern.html">
         <f:textbox name="cloudbeesaccount.filePattern" value="${instance.filePattern}" />
     </f:entry>
-
 
   </j:if>
 </j:jelly>

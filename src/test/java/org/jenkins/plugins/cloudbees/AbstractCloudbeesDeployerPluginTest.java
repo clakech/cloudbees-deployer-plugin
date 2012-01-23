@@ -18,32 +18,29 @@ package org.jenkins.plugins.cloudbees;
 import org.jenkins.plugins.cloudbees.util.CloudbeesServer;
 import org.jvnet.hudson.test.HudsonTestCase;
 
+import com.google.common.collect.Lists;
+
 /**
  * @author Olivier Lamy
  */
-public abstract class AbstractCloudbeesDeployerPluginTest  extends HudsonTestCase
-{
+public abstract class AbstractCloudbeesDeployerPluginTest extends HudsonTestCase {
 
-    public CloudbeesServer cloudbeesServer = new CloudbeesServer();
+    public CloudbeesServer  cloudbeesServer = new CloudbeesServer();
 
     public CloudbeesAccount cloudbeesAccount;
 
     @Override
-    protected void setUp()
-        throws Exception
-    {
+    protected void setUp() throws Exception {
         super.setUp();
-        this.cloudbeesServer.startServer();
-        cloudbeesAccount = new CloudbeesAccount( "olamy", "key", "so secret key" );
-        CloudbeesPublisher.DESCRIPTOR.setAccounts( cloudbeesAccount );
+        cloudbeesServer.startServer();
+        cloudbeesAccount = new CloudbeesAccount("olamy", "key", "so secret key");
+        CloudbeesPublisher.DESCRIPTOR.setAccounts(Lists.newArrayList(cloudbeesAccount));
         CloudbeesPublisher.DescriptorImpl.CLOUDBEES_API_URL = "http://localhost:" + cloudbeesServer.getPort();
     }
 
     @Override
-    protected void tearDown()
-        throws Exception
-    {
+    protected void tearDown() throws Exception {
         super.tearDown();
-        this.cloudbeesServer.stopServer();
+        cloudbeesServer.stopServer();
     }
 }
